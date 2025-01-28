@@ -28,7 +28,7 @@ function Header() {
             </Link>
           </li>
           <li className="flex">
-            <Link href="/productos" className="flex items-center px-4 -mb-1 border-b-2 hover:text-red-600 hover:border-red-600">
+            <Link href="/products" className="flex items-center px-4 -mb-1 border-b-2 hover:text-red-600 hover:border-red-600">
               Productos
             </Link>
           </li>

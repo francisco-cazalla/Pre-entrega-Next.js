@@ -1,6 +1,8 @@
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { CartProvider } from "@/components/CartContext";
+
 
 
 function RootLayout({ children }) {
@@ -10,7 +12,7 @@ function RootLayout({ children }) {
     <html lang="en">
       <body>
         <Header/>        
-        {children}
+        <CartProvider>{children}</CartProvider>
         <Footer/>
       </body>
     </html>

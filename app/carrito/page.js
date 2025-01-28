@@ -1,27 +1,46 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import RemoveButton from "@/components/RemoveButton";
+import { getCartItems } from "../api/products/cart/route";
+import { Suspense } from "react";
+import ProductsLoader from "@/components/ProductLoader";
+
+
 
 const Cart = () => {
-  const [cartProducts, setCartProducts] = useState([]);
+  const [cartItems, setCartItems] = useState([]);
+  
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
-    const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
-    setCartProducts(storedCart);
-  }, []);
+    const fetchCart = async () => {
+      const items = await getCartItems();
+      setCartItems(items);
+      calculateTotal(items); 
+    };
 
-  const handleRemoveProduct = (productId) => {
-    const updatedCart = cartProducts.filter((product) => product.id !== productId);
-    setCartProducts(updatedCart);
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    fetchCart();
+  }, []);
+  const handleRemoveFromCart = (id) => {
+    setItems((prevItems) => prevItems.filter((item) => item.id !== id));
   };
 
+  const calculateTotal = (items) => {
+    const totalPrice = items.reduce((sum, item) => sum + item.price, 0);
+    setTotal(totalPrice);
+  };
+
+  
+
   return (
+    <>
     <div className="flex flex-col p-6 space-y-4 sm:p-10 dark:bg-gray-50 dark:text-gray-800">
+      <Suspense fallback={<ProductsLoader/>}>
       <h2 className="text-xl font-semibold">Your Cart</h2>
-      {cartProducts.length > 0 ? (
+      {cartItems.length > 0 ? (
         <ul className="flex flex-col divide-y dark:divide-gray-300">
-          {cartProducts.map((product) => (
+          {cartItems.map((product) => (
             <li key={product.id} className="flex flex-col py-6 sm:flex-row sm:justify-between">
               <div className="flex w-full space-x-2 sm:space-x-4">
                 <img
@@ -42,9 +61,10 @@ const Cart = () => {
                     </div>
                   </div>
                   <div className="flex text-sm divide-x">
+                  <RemoveButton id={product.id} onRemove={handleRemoveFromCart} />
                     <button
                       type="button"
-                      onClick={() => handleRemoveProduct(product.id)}
+                      onClick={() => handleRemove(product.id)}
                       className="flex items-center px-2 py-1 pl-0 space-x-1 text-red-500 hover:underline"
                     >
                       <svg
@@ -58,24 +78,32 @@ const Cart = () => {
                         <rect width="32" height="200" x="312" y="216"></rect>
                         <path d="M328,88V40c0-13.458-9.488-24-21.6-24H205.6C193.488,16,184,26.542,184,40V88H64v32H448V88ZM216,48h80V88H216Z"></path>
                       </svg>
-                      <span>Remove</span>
+                      
                     </button>
                     <button type="button" className="flex items-center px-2 py-1 space-x-1 text-blue-500 hover:underline">
                       
                       
                     </button>
+                    
                   </div>
                 </div>
               </div>
+              
             </li>
-          ))}
+            
+          ))}<div className=" text-center text-4xl mt-4 p-2 bg-red-600 text-white rounded-md hover:bg-white hover:text-black transition-all">
+          <h2>Total: ${total}</h2>
+          </div>
         </ul>
+        
       ) : (
         <div className="text-center text-gray-500">
           <p>Your cart is empty. Start adding products to see them here!</p>
         </div>
       )}
+      </Suspense>
     </div>
+    </>
   );
 };
 
