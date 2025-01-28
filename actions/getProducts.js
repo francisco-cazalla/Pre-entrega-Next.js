@@ -1,6 +1,6 @@
 export async function getProducts(categoria) {
   try {
-    const url = categoria ? `http://localhost:3000/api/products?categoria=${categoria}` : "http://localhost:3000/api/products";
+    const url = categoria ? `https://pre-entrega-next-js.vercel.app/products?categoria=${categoria}` : "https://pre-entrega-next-js.vercel.app/products";
     console.log("url en getProducts")
     console.log(url)
     const data = await fetch(url)
