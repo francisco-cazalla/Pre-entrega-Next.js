@@ -1,6 +1,8 @@
 "use client";
 import { useState } from 'react';
 import Image from 'next/image';
+import { addAllProductsToCart } from '@/actions/addProductToCart';
+import { initializeProductsInCart } from '@/actions/addProductToCart';
 
 
 import { migrate } from '@/actions/migrate';
@@ -8,34 +10,26 @@ import { migrate } from '@/actions/migrate';
 export default function Home() {
 	
 	
-
+	
 	
 
 
 
   return(
 	
-    <div className="p-5 mx-auto sm:p-10 md:p-16 dark:bg-gray-100 dark:text-gray-800">
-	<div className="flex flex-col max-w-3xl mx-auto overflow-hidden rounded">
-		<img src="https://www.redeweb.com/wp-content/uploads/2023/10/aparatos-electronicos.jpg" alt="" className="w-full h-60 sm:h-96 dark:bg-gray-500" />
-		<div className="p-6 pb-12 m-4 mx-auto -mt-16 space-y-6 lg:max-w-2xl sm:px-10 sm:mx-12 lg:rounded-md dark:bg-gray-50">
-			<div className="space-y-2">
-				<a rel="noopener noreferrer" href="#" className="inline-block text-2xl font-semibold sm:text-3xl">The Best Activewear from the Nordstrom Anniversary Sale</a>
-				<p className="text-xs dark:text-gray-600">By
-					<a rel="noopener noreferrer" href="#" className="text-xs hover:underline">Leroy Jenkins</a>
-				</p>
-			</div>
-			<div className="dark:text-gray-800">
-				<p>Insert the actual text content here...</p>
-			</div>
-		</div>
+	
+    
+	<div className="p-5 mx-auto sm:p-10 md:p-16 dark:bg-gray-100 dark:text-gray-800">
+	<div className="flex flex-col max-w-3xl mx-auto overflow-hidden rounded p-5 m-8 ">
+		<img src="https://tiendatecnologica.com.ar/wp-content/uploads/2021/10/LOGO_TT_Z-PNG.png" alt="" className="w-full h-60 sm:h-96 dark:bg-transparent" />
+		
 	</div>
-	<section className="py-6 dark:bg-red-600 dark:text-gray-50">
+	<section className="py-6 dark:bg-slate-200 dark:text-red-600 m-8 rounded-2xl shadow-xl">
 	<div className="container mx-auto flex flex-col items-center justify-center p-4 space-y-8 md:p-10 md:px-24 xl:px-48">
 		<h1 className="text-5xl font-bold leading-none text-center">Encuentra el producto que necesitas Ya!</h1>
 		<p className="pt-2 pb-8 text-xl font-medium text-center">Eum omnis itaque harum at quae sequi unde similique alias asperiores totam. Ex cumque maxime harum doloremque, tempore nam fugiat aspernatur rerum ipsa unde est modi commodi molestias maiores eveniet eius esse asperiores neque dicta ea quisquam? Excepturi sapiente officiis explicabo ab?</p>
 		<a href='/products'>
-		<button className="px-8 py-3 text-lg font-semibold rounded dark:bg-gray-100 dark:text-gray-900">PRODUCTOS</button>
+		<button className="px-8 py-3 text-lg font-semibold rounded dark:bg-transparent dark:text-red-600 hover:dark:bg-red-600 hover:text-white transition-all duration-500">PRODUCTOS</button>
         </a>	
 	</div>
 

@@ -10,21 +10,19 @@ export default function ProductLayout({ children }) {
   ];
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
-      <aside className="w-64 p-6 bg-white shadow-md dark:bg-gray-50 dark:text-gray-800">
+    <div className="flex min-h-screen dark:bg-gray-100">
+      <aside className="w-64 p-6 dark:bg-gray-100   dark:text-gray-800">
         <nav className="space-y-8 text-sm">
           <div className="space-y-4">
-            <h2 className="text-sm font-semibold tracking-widest uppercase dark:text-gray-600">
+            <h2 className="text-lg font-semibold tracking-widest uppercase dark:text-gray-600">
               Filtrar Productos
             </h2>
             <div className="space-y-2">
-              <label htmlFor="category" className="block text-sm font-medium">
-                Categoría
-              </label>
+              
               <div className="flex flex-col gap-4">
                 <Link
                   href="/products"
-                  className="border rounded-lg bg-red-600 text-white p-2 text-lg hover:bg-white hover:text-black transition-all"
+                  className="border rounded-2xl bg-red-600 text-white p-2 text-lg hover:bg-white hover:text-black transition-all duration-200 shadow-2xl"
                 >
                   Todos
                 </Link>
@@ -46,7 +44,7 @@ export default function ProductLayout({ children }) {
                 return(
                   <Link key={categorias.id}
                   href={categoryPath}
-                  className="border rounded-lg bg-red-600 text-white p-2 text-lg hover:bg-white hover:text-black transition-all">
+                  className="border rounded-2xl bg-red-600 text-white p-2 text-lg hover:bg-white hover:text-black transition-all duration-200 shadow-2xl">
                     {categorias.name}
                   </Link>
                 )

@@ -5,38 +5,68 @@ import RemoveButton from "@/components/RemoveButton";
 import { getCartItems } from "../api/products/cart/route";
 import { Suspense } from "react";
 import ProductsLoader from "@/components/ProductLoader";
+import { getDocs } from "firebase/firestore";
+import { collection } from "firebase/firestore";
+import { db } from "@/firebase/firebaseConfig";
+import Loading from "@/components/loading";
+import { useNotification } from "@/components/NotificationContext";
+
 
 
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
-  
-  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const { showNotification } = useNotification();
 
   useEffect(() => {
-    const fetchCart = async () => {
-      const items = await getCartItems();
-      setCartItems(items);
-      calculateTotal(items); 
+    const loadCartItems = async () => {
+      try {
+        const items = await getCartItems(); // Llama a la API
+        setCartItems(items);
+      } catch (error) {
+        console.error("Error cargando carrito:", error);
+      } finally {
+        setLoading(false); // Asegura que el loading se desactiva
+      }
     };
 
-    fetchCart();
+    loadCartItems();
   }, []);
-  const handleRemoveFromCart = (id) => {
-    setItems((prevItems) => prevItems.filter((item) => item.id !== id));
+
+  const handleRemoved = (removedFirebaseId) => {
+    setCartItems((prevItems) =>
+      prevItems.filter((item) => item.firebaseId !== removedFirebaseId)
+    );
   };
 
-  const calculateTotal = (items) => {
-    const totalPrice = items.reduce((sum, item) => sum + item.price, 0);
-    setTotal(totalPrice);
+  const calculateTotal = () => {
+    return cartItems.reduce((total, item) => total + item.price, 0);
   };
+  const handleCompra = () => {
+    
+    const orderNumber = Math.floor(Math.random() * 900000) + 100000;
+    showNotification(
+      `Compra exitosa. Tu número de orden es: ${orderNumber}`,
+      5000
+    );}
 
   
+  if (loading) return  <Loading/> ;
+  
 
+  
+  if (cartItems.length === 0) return <div className="text-center text-slate-950 text-5xl p-56 bg-white">
+  <p>Your cart is empty. Start adding products to see them here!</p>
+</div>;
+
+
+  
   return (
     <>
+    
     <div className="flex flex-col p-6 space-y-4 sm:p-10 dark:bg-gray-50 dark:text-gray-800">
-      <Suspense fallback={<ProductsLoader/>}>
+      
       <h2 className="text-xl font-semibold">Your Cart</h2>
       {cartItems.length > 0 ? (
         <ul className="flex flex-col divide-y dark:divide-gray-300">
@@ -61,25 +91,8 @@ const Cart = () => {
                     </div>
                   </div>
                   <div className="flex text-sm divide-x">
-                  <RemoveButton id={product.id} onRemove={handleRemoveFromCart} />
-                    <button
-                      type="button"
-                      onClick={() => handleRemove(product.id)}
-                      className="flex items-center px-2 py-1 pl-0 space-x-1 text-red-500 hover:underline"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 512 512"
-                        className="w-4 h-4 fill-current"
-                      >
-                        <path d="M96,472a23.82,23.82,0,0,0,23.579,24H392.421A23.82,23.82,0,0,0,416,472V152H96Zm32-288H384V464H128Z"></path>
-                        <rect width="32" height="200" x="168" y="216"></rect>
-                        <rect width="32" height="200" x="240" y="216"></rect>
-                        <rect width="32" height="200" x="312" y="216"></rect>
-                        <path d="M328,88V40c0-13.458-9.488-24-21.6-24H205.6C193.488,16,184,26.542,184,40V88H64v32H448V88ZM216,48h80V88H216Z"></path>
-                      </svg>
-                      
-                    </button>
+                  <RemoveButton productId={product.firebaseId} onRemoved={handleRemoved} />
+                    
                     <button type="button" className="flex items-center px-2 py-1 space-x-1 text-blue-500 hover:underline">
                       
                       
@@ -92,8 +105,14 @@ const Cart = () => {
             </li>
             
           ))}<div className=" text-center text-4xl mt-4 p-2 bg-red-600 text-white rounded-md hover:bg-white hover:text-black transition-all">
-          <h2>Total: ${total}</h2>
+          <h3 className="mt-4">Total: ${calculateTotal()}</h3>
           </div>
+          <button
+        onClick={handleCompra}
+        className="mt-4 w-full bg-green-500 text-white py-2 rounded hover:bg-green-600 transition"
+      >
+        Comprar
+      </button>
         </ul>
         
       ) : (
@@ -101,10 +120,12 @@ const Cart = () => {
           <p>Your cart is empty. Start adding products to see them here!</p>
         </div>
       )}
-      </Suspense>
+    
     </div>
+    
     </>
   );
+  
 };
 
 export default Cart;

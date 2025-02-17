@@ -1,40 +1,36 @@
 "use client";
 
-import { deleteDoc, doc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/firebase/firebaseConfig";
-import { removeCartItem } from "@/app/api/products/cart/route";
+import { useNotification } from "./NotificationContext";
 
-function RemoveButton({ id, onRemove }) {
+export default function RemoveButton({ productId, onRemoved }) {
+  const { showNotification } = useNotification();
+
   const handleRemove = async () => {
     try {
-      
-      if (!id || typeof id !== "string") {
-        throw new Error("ID inválido o no proporcionado.");
+      if (!productId || typeof productId !== "string") {
+        throw new Error("ID del producto no proporcionado.");
       }
-
-      
-      const productRef = doc(db, "cart", id);
-      await deleteDoc(productRef);
-
-      
-      if (onRemove) {
-        onRemove(id);
+      const prodIdStr = productId.toString();
+      const productRef = doc(db, "products", prodIdStr);
+      await updateDoc(productRef, { inCart: false });
+      if (onRemoved) {
+        onRemoved(productId);
       }
-
-      alert("Producto eliminado del carrito.");
+      showNotification("Producto eliminado del carrito.");
     } catch (error) {
-      console.error("No se pudo eliminar el producto:", error);
+      console.error("Error al eliminar el producto del carrito:", error);
+      showNotification("Error al eliminar el producto del carrito.");
     }
   };
 
   return (
     <button
-      onClick={removeCartItem}
-      className="remove-btn bg-red-500 text-white px-3 py-1 rounded"
+      onClick={handleRemove}
+      className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
     >
-      Eliminar
+      Remover del carrito
     </button>
   );
 }
-
-export default RemoveButton;

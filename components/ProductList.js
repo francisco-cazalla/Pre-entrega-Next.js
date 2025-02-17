@@ -33,28 +33,30 @@ console.log('🇯🇴 products:', productos);
   }, [initialProducts]);*/}
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full max-w-screen-xl">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 w-full max-w-screen-3xl ">
       {productos && productos.length > 0 ? (
         productos.map(product => (
           <div key={product.id} className="w-64 p-4">
-            <div className="border rounded p-4 shadow-md">
+            <div className="border  p-4 rounded-xl shadow-2xl max-h-96">
               <img
                 src={product.image}
                 alt={product.name}
-                className="object-cover object-center w-full rounded-md h-40"
+                className="object-cover object-center w-full rounded-md h-40 "
               />
               <div className="mt-4">
-                <span className="block text-xs font-medium tracking-widest uppercase text-red-600">
+                <span className="block text-xs font-thin   text-red-600 ">
                   {product.name}
                 </span>
-                <h2 className="text-lg font-semibold mt-2">{product.category}</h2>
+                <h2 className="text-lg font-semibold mt-2 text-red-600">{product.category}</h2>
               </div>
               <p className="text-gray-800 mt-2">${product.price}</p>
+              <div className="md:mt-auto p-4">
               <Link href={`/productos/${product.id}`} passHref>
-                <button className="mt-4 p-2 bg-red-600 text-white rounded-md hover:bg-white hover:text-black transition-all">
+                <button className="mt-4 p-2 bg-red-600 text-white rounded-md hover:bg-white hover:text-black  transition-all duration-200 ">
                   Ver Detalles
                 </button>
               </Link>
+              </div>
             </div>
           </div>
         ))

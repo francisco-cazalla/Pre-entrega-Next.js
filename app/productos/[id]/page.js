@@ -1,3 +1,6 @@
+import dynamic from "next/dynamic";
+
+
 import AddToCartButton from "@/components/AddtoCartButton";
 
 import { getProductById } from "@/actions/getProductById";
@@ -5,22 +8,19 @@ import { Suspense } from "react";
 import ProductsLoader from "@/components/ProductLoader";
 
 
-export default async function ProductDetail  ({ params }) {
-  
-  const { id } = await params;
-
- 
+export default async function ProductDetail({ params }) {
+  const { id } = params;  
   const product = await getProductById(id);
 
   if (!product) {
-    return <div>Producto no encontrado</div>;
+    return <div>Producto no encontrado.</div>;
   }
   return (
     <>
     
-    <section className="min-h-screen bg-gray-100 flex flex-col items-center justify-center py-10">
+    <section className="min-h-full bg-gray-100 flex flex-col items-center justify-center py-10">
     <Suspense fallback={<ProductsLoader/>}>
-      <div className="bg-white shadow-lg rounded-lg max-w-4xl mx-auto p-6 space-y-6">
+      <div className="bg-white  max-w-4xl mx-auto p-6 space-y-6 shadow-2xl rounded-2xl">
         <div className="w-full">
           <img
             src={product.image}
@@ -35,13 +35,13 @@ export default async function ProductDetail  ({ params }) {
             <span className="text-sm font-medium text-gray-500">
               Categoría: {product.category}
             </span>
-            <span className="text-xl font-bold text-green-600">
+            <span className="text-3xl font-bold text-green-600 text-center justify-center">
               ${product.price}
             </span>
           </div>
         </div>
         <div className="text-center">
-        <AddToCartButton product={product} />
+        <AddToCartButton productId={product.firebaseId} />
         </div>
       </div>
 
