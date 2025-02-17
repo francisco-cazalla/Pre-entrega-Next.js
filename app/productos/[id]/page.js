@@ -13,8 +13,16 @@ export default async function ProductDetail({ params }) {
   const product = await getProductById(id);
 
   if (!product) {
-    return <div>Producto no encontrado.</div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <div className="bg-white p-8 rounded shadow-md text-center">
+          <h2 className="text-2xl font-bold mb-4">Producto no encontrado</h2>
+          <p className="text-gray-600">Lo sentimos, no se encontró el producto que estás buscando.</p>
+        </div>
+      </div>
+    );
   }
+  
   return (
     <>
     
