@@ -100,6 +100,11 @@ function Header() {
             </Link>
           </li>
           <li>
+            <Link href="/logIn" onClick={() => setMobileMenuOpen(false)} className=" bg-white block px-4 py-2 border border-red-600 rounded hover:bg-red-600 hover:text-white transition duration-300">
+              LogIn
+            </Link>
+          </li>
+          <li>
             <Link href="/carrito" onClick={() => setMobileMenuOpen(false)} className=" bg-white block px-4 py-2 border border-red-600 rounded hover:bg-red-600 hover:text-white transition duration-300">
               Carrito
             </Link>
